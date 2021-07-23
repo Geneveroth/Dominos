@@ -18,6 +18,9 @@ describe('Dominos Test', () => {
     })
 
     it('Choose the first result', () => {
+        cy.get('[')
+        //try getting the dom element that shows the error message
+        //do an if check and if it exists, search for future carryout, else store pickup
         cy.contains('Store Pickup').first().click()
         cy.contains( 'Future Carryout Order').first().click()
     })
@@ -35,6 +38,7 @@ describe('Dominos Test', () => {
         cy.get('select[name="Weight|C--1"]').select('Double')
         cy.get('.c-topping-Xw').check()
         cy.get('button[data-quid="cooking-instructions"]').click()
+        //find proper name for collapsed button
     })
 
   })
