@@ -1,6 +1,7 @@
 describe('Dominos Test', () => {
     it('Visit Dominos.com', () => {
         cy.visit('https://www.dominos.com/en/')
+        cy.url().should('include','https://www.dominos.com/en/' )
     })
 
     it('Click on "Order Online"', () => {
@@ -12,15 +13,18 @@ describe('Dominos Test', () => {
     })
 
     it('Enter the zip code 94611 and click search', () => {
-        cy.get('#Postal_Code_Sep').should('be.visible')
-            .type('94611').should('have.value', '94611')
-        cy.contains("Search Locations").click()
+        cy.get('#Postal_Code_Sep')
+            .type('94611', {force:true}).should('have.value', '94611')
+        cy.contains("Search Locations").click({force:true})
     })
 
-    it('If a "store closed" error appears, click "Future Carryout Order"', () => {
+    it('If a "store closed" error appears, click "Future Carryout Order" and set the future time and date', () => {
         cy.get('[class$="carryout"]')
         cy.contains( 'Future Carryout Order').first().click()
+        cy.get('select[name="Future_Time"').select("12:00 pm").should('equal', "12:00pm")
+        cy.contains('Use Future Time').click()
     })
+
     
     it('If no error appears, click "Store Pickup"', () => {
         cy.get('[class$="carryout"]')
@@ -28,7 +32,7 @@ describe('Dominos Test', () => {
     })
 
     it('Click on "Build Your Own Pizza"', () => {
-       cy.contains('Build Your Own Pizza').click() 
+        cy.contains('Build Your Own Pizza').click() 
     })
 
     it('If the "Extra Cheese" dialog box appears, click "No Thanks"', () =>{
@@ -42,14 +46,14 @@ describe('Dominos Test', () => {
     })
 
     it('Choose "Double" Cheese and "Garlic Parmesan Sauce"', () => {
-        cy.get('select[name="Weight|C--1"]').select('Double')
-        cy.get('.c-topping-Xw').check()
+        cy.get('select[name="Weight|C--1"]').select('Double').should('have.value', "2")
+        cy.get('.c-topping-Xw').check().should('be.checked')
     })
 
     it('Add special cooking instructions of "Well Done" and "Square Cut"', () => {
         cy.get('[class^="button--cooking-instructions"]').click()
-        cy.get('[data-description="Well Done"').check({force:true})
-        cy.get('[data-description="Square Cut"').check({force:true})
+        cy.get('[data-description="Well Done"').check({force:true}).should('be.checked')
+        cy.get('[data-description="Square Cut"').check({force:true}).should('be.checked')
     })
 
     it('Click on "Toppings"', () => {
@@ -57,9 +61,9 @@ describe('Dominos Test', () => {
     })
 
     it('Choose "Pepperoni", "Bacon", and "Spinach"', () =>{
-        cy.get('.topping-P').check()
-        cy.get('.topping-K').check()
-        cy.get('.topping-Si').check()
+        cy.get('.topping-P').check().should('be.checked')
+        cy.get('.topping-K').check().should('be.checked')
+        cy.get('.topping-Si').check().should('be.checked')
     })
 
     it('Add the pizza to the order', () =>{
@@ -67,7 +71,7 @@ describe('Dominos Test', () => {
     })
 
     it('Choose "Garlic Dipping Sauce" and click "Add Sides"', () => {
-        cy.get('[value="F_SIDGAR"]').check()
+        cy.get('[value="F_SIDGAR"]').check().should('be.checked')
         cy.contains('Add Sides').click()
     })
 
