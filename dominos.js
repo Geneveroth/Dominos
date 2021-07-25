@@ -13,8 +13,7 @@ describe('Dominos Test', () => {
     })
 
     it('Enter the zip code 94611 and click search', () => {
-        cy.get('#Postal_Code_Sep')
-            .type('94611', {force:true}).should('have.value', '94611')
+        cy.get('#Postal_Code_Sep').type('94611', {force:true}).should('have.value', '94611')
         cy.contains("Search Locations").click({force:true})
     })
 
@@ -26,13 +25,17 @@ describe('Dominos Test', () => {
     })
 
     
-    it('If no error appears, click "Store Pickup"', () => {
+    it('If no error appears, click "Store Pickup" on the first search result', () => {
         cy.get('[class$="carryout"]')
         cy.contains('Store Pickup').first().click()
     })
 
     it('Click on "Build Your Own Pizza"', () => {
-        cy.contains('Build Your Own Pizza').click() 
+        cy.contains('Build Your Own Pizza').should('be.visible').click({force:true}) 
+    })
+
+    it('Choose "X-Large" size pizza and crust', () => {
+        cy.get('[id$=16]').click()
     })
 
     it('If the "Extra Cheese" dialog box appears, click "No Thanks"', () =>{
@@ -40,8 +43,7 @@ describe('Dominos Test', () => {
         cy.contains('No Thanks').click()
     })
 
-    it('Choose "X-Large" size pizza and crust', () => {
-        cy.get('[id$=16]').click()
+    it('Click "Cheese and Sauce"', () => {
         cy.contains('Cheese & Sauce').click()
     })
 
@@ -75,7 +77,7 @@ describe('Dominos Test', () => {
         cy.contains('Add Sides').click()
     })
 
-    it('Check the cart for the order and veryify that it is correct', () => {
+    it('Check the cart for the order and verify that it is correct', () => {
         cy.contains('Cart').click({force:true})
         cy.get('[data-quid="mini-cart-product-toppings-whole"]').should('have.text', "Whole: Double Cheese, Garlic Parmesan Sauce, Pepperoni, Bacon, Spinach, No Robust Inspired Tomato Sauce")
         cy.get('[data-quid="mini-cart-product-2-name-button"]').should('have.text', "Garlic Dipping Cup")
